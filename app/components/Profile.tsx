@@ -19,7 +19,7 @@ export default function Profile() {
 
   if (status === "authenticated") {
     return (
-      <div className="fixed top-4 right-4 z-50">
+      <div className="z-50">
         <div className="relative">
           {/* Profile Button */}
           <button

@@ -19,11 +19,14 @@ import FileUpload from "./FileUpload"; // Adjust the import path as needed
 import { UploadedVideo } from "@/models/Video";
 import { UploadResponse } from "@imagekit/next";
 import { apiClient } from "@/lib/api-client";
+import { useSession } from "next-auth/react";
 
 const VideoUploadPage = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadedVideo, setUploadedVideo] = useState<UploadResponse | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const {data:session} = useSession();
+  const userId = session?.user?.email;
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -63,7 +66,7 @@ const VideoUploadPage = () => {
       uploadedVideo
     });
 
-    await apiClient.createVideo({title, description, videoUrl:uploadedVideo.url!, thumbnailUrl: "thumbnail url"})
+    await apiClient.createVideo({title, description, videoUrl:uploadedVideo.url!, thumbnailUrl: "thumbnail url", userId:userId!})
   };
 
   return (
@@ -131,7 +134,7 @@ const VideoUploadPage = () => {
             </div>
 
             {/* Optional: Display the uploaded video */}
-            <div className="mt-3">
+            {/* <div className="mt-3">
               <video
                 controls
                 className="w-full max-w-sm rounded"
@@ -139,7 +142,7 @@ const VideoUploadPage = () => {
               >
                 Your browser does not support the video tag.
               </video>
-            </div>
+            </div> */}
           </div>
         )}
       </div>

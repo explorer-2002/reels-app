@@ -1,6 +1,7 @@
 "use client"
 
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -32,11 +33,14 @@ export default function Login(){
             <input type="email" className="input" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
             <input type="password" className="input" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
             <button type="submit" className="button">Sign in</button>
+            <p className="text-white">New User ? <Link href="/register" className="underline">Create Account</Link></p>
+
         </form>
 
         <style jsx>{`
                 .container {
                     min-height: 100vh;
+                    min-width: 100vw;
                     display: flex;
                     align-items: center;
                     justify-content: center;

@@ -72,3 +72,38 @@ export async function POST(request: NextRequest){
         return NextResponse.json({error: "Failed to create video"}, {status: 401})
     }
 }
+
+export async function PATCH(request: NextRequest){
+     
+     try{
+        const session = await getServerSession(authOptions);
+
+        if(!session){
+            return NextResponse.json({
+                error: "Unauthorized",
+                status:401
+            })
+        }
+
+        await connectToDatabase();
+
+        const body: IVideo = await request.json();
+
+        const videoData: IVideo = {
+            ...body,
+            controls: body?.controls ?? true,
+            transformation: {
+                height: 1920,
+                width: 1080,
+                quality: body?.transformation?.quality ?? 100
+            }
+        }
+
+        const response = await Video.findOneAndUpdate({userId: videoData?.userId}, videoData, {new: true, upsert: true});
+        return NextResponse.json(response);
+    }
+
+    catch(error){
+        return NextResponse.json({error: "Failed to update video"}, {status: 401})
+    }
+}

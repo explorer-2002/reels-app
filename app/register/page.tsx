@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -50,11 +51,13 @@ export default function Register(){
             <input type="password" className="input" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
             <input type="password" className="input" placeholder="Conform Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
             <button type="submit" className="button">Register</button>
+            <p className="text-white">Already have an account ? <Link href="/login" className="underline">Sign in</Link></p>
         </form>
 
         <style jsx>{`
                 .container {
                     min-height: 100vh;
+                    min-width: 100vw;
                     display: flex;
                     align-items: center;
                     justify-content: center;
