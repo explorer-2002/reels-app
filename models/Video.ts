@@ -22,6 +22,7 @@ export interface IVideo {
   controls?: boolean;
   userId?: string;
   likes?: number;
+  fileType?: 'image' | 'video';
   transformation?: {
     height: number;
     width: number;
@@ -38,6 +39,7 @@ const videoSchema = new Schema(
     controls: {type:Boolean, default: true},
     userId: {type: String},
     likes: {type: Number, default: 0},
+    fileType: {type: String, enum: ['image', 'video'], default: 'video'},
     transformation: {
         height: {type:Number, default: VIDEO_DIMENSIONS.height},
         width: {type:Number, default: VIDEO_DIMENSIONS.width},

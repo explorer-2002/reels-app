@@ -14,12 +14,13 @@
 
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import FileUpload from "./FileUpload"; // Adjust the import path as needed
 import { UploadedVideo } from "@/models/Video";
 import { UploadResponse } from "@imagekit/next";
 import { apiClient } from "@/lib/api-client";
 import { useSession } from "next-auth/react";
+import { set } from "mongoose";
 
 const VideoUploadPage = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -30,6 +31,7 @@ const VideoUploadPage = () => {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const fileTypeRef = useRef<'image' | 'video'>('video');
 
   const handleUploadSuccess = (response: UploadResponse) => {
     console.log("Upload successful:", response);
@@ -66,7 +68,12 @@ const VideoUploadPage = () => {
       uploadedVideo
     });
 
-    await apiClient.createVideo({title, description, videoUrl:uploadedVideo.url!, thumbnailUrl: "thumbnail url", userId:userId!})
+    await apiClient.createVideo({title, description, videoUrl:uploadedVideo.url!,fileType: fileTypeRef.current, thumbnailUrl: "thumbnail url", userId:userId!})
+    setTitle("");
+    setDescription("");
+    setUploadedVideo(null);
+    setUploadProgress(0);
+    setIsUploading(false);
   };
 
   return (
@@ -78,15 +85,44 @@ const VideoUploadPage = () => {
             <input type="text" placeholder="title" value={title} onChange={(e) => setTitle(e.target.value)} className="bg-gray-50"/>
 
             <label>Description</label>
-            <textarea rows={10} cols={15} onChange={(e) => setDescription(e.target.value)} className="bg-gray-50" />
+            <textarea rows={6} cols={15} onChange={(e) => setDescription(e.target.value)} className="bg-gray-50" />
+
+
+            <div className="flex items-center space-x-4 mb-4">
+            <span className="text-sm font-medium text-gray-700">File Type:</span>
+            <div className="flex items-center">
+              <input
+                type="radio"
+                id="fileTypeImage"
+                name="fileType"
+                value="image"
+                checked={fileTypeRef.current === 'image'}
+                onChange={() => (fileTypeRef.current = 'image')}
+                className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
+              />
+              <label htmlFor="fileTypeImage" className="ml-2 block text-sm text-gray-900">Image</label>
+            </div>
+            <div className="flex items-center">
+              <input
+                type="radio"
+                id="fileTypeVideo"
+                name="fileType"
+                value="video"
+                checked={fileTypeRef.current === 'video'}
+                onChange={() => (fileTypeRef.current = 'video')}
+                className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
+              />
+              <label htmlFor="fileTypeVideo" className="ml-2 block text-sm text-gray-900">Video</label>
+            </div>
+          </div>
 
             <FileUpload
-              fileType="video"
+              fileType={fileTypeRef.current}
               onSuccess={handleUploadSuccess}
               onProgress={handleUploadProgress}
             />
 
-            <button type="submit" className="w-full bg-blue-500 text-gray-50">Upload Video</button>
+            <button type="submit" className="w-full bg-blue-500 text-gray-50">Upload Video / Image</button>
           </form>
         </div>
 

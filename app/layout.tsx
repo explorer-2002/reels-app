@@ -5,6 +5,8 @@ import "./globals.css";
 import ClientImageKitProvider from "./components/ImageKitProvider";
 // import { SessionProvider } from "next-auth/react";
 import Providers from "./components/Providers";
+import Navbar from "./components/Navbar";
+import SessionProvider from "./components/SessionProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +34,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
          <ClientImageKitProvider>
+          <SessionProvider>
+            <Navbar />
           {children}
+          </SessionProvider>
         </ClientImageKitProvider>
       </body>
     </html>

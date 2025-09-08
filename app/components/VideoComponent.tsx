@@ -6,12 +6,14 @@ import { IVideo } from "@/models/Video";
 import { Video } from "@imagekit/next";
 import { Download, Share2, ThumbsUp } from "lucide-react";
 import { useState } from "react";
-import { set } from "mongoose";
+import { Image } from '@imagekit/next';
 
 export default function VideoComponent({ video }: { video: IVideo }) {
 
   console.log("Video Component");
   const [isLiked, setIsLiked] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [currentLikes, setCurrentLikes] = useState(video.likes || 0);
 
   const updateVideo = async (updatedData: Partial<IVideo>) => {
     const updatedVideo = await fetch('/api/videos', {
@@ -23,6 +25,41 @@ export default function VideoComponent({ video }: { video: IVideo }) {
     console.log(updatedVideo);
     setIsLiked(true);
   }
+
+  const handleLike = async () => {
+    if (isAnimating) return; // Prevent multiple clicks during animation
+
+    setIsAnimating(true);
+
+    if (!isLiked) {
+      const newLikeCount = currentLikes + 1;
+      setCurrentLikes(newLikeCount);
+      setIsLiked(true);
+
+      // Update in database
+      await updateVideo({
+        likes: newLikeCount,
+        userId: video.userId,
+        _id: video._id
+      });
+    } else {
+      // Handle unlike
+      const newLikeCount = Math.max(0, currentLikes - 1);
+      setCurrentLikes(newLikeCount);
+      setIsLiked(false);
+
+      // Update in database
+      await updateVideo({
+        likes: newLikeCount,
+        userId: video.userId
+      });
+    }
+
+    // Reset animation state after animation completes
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 600);
+  };
 
   const handleNativeShare = async () => {
     if (navigator.share) {
@@ -73,17 +110,134 @@ export default function VideoComponent({ video }: { video: IVideo }) {
               className="w-full h-full object-cover"
               autoPlay={true}
             /> */}
-            <Video
-              urlEndpoint="https://ik.imagekit.io/your_imagekit_id"
-              src={video.videoUrl}
-              controls
-              width={300}
-              height={300}
-              autoPlay={true}
-            />
+            {video.fileType === 'image' ?
+              <Image
+                urlEndpoint="https://ik.imagekit.io/your_imagekit_id" // New prop
+                src={video.videoUrl}
+                width={300}
+                height={300}
+                alt="Picture of the author"
+              /> :
+              <Video
+                urlEndpoint="https://ik.imagekit.io/your_imagekit_id"
+                src={video.videoUrl}
+                controls
+                width={300}
+                height={300}
+                autoPlay={true}
+              />
+            }
           </div>
         </Link>
       </figure>
+
+      <style jsx>{`
+        @keyframes likeAnimation {
+          0% {
+            transform: scale(1);
+          }
+          15% {
+            transform: scale(1.2);
+          }
+          30% {
+            transform: scale(0.95);
+          }
+          45%, 80% {
+            transform: scale(1);
+          }
+        }
+
+        @keyframes heartBeat {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.1);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+
+        @keyframes numberPop {
+          0% {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: translateY(-10px) scale(1.1);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+          }
+        }
+
+        @keyframes fillColor {
+          0% {
+            fill: currentColor;
+          }
+          100% {
+            fill: #3b82f6;
+          }
+        }
+
+        .like-button-animate {
+          animation: likeAnimation 0.6s ease-in-out;
+        }
+
+        .like-icon-liked {
+          color: #3b82f6;
+          animation: heartBeat 0.3s ease-in-out;
+        }
+
+        .like-count-animate {
+          animation: numberPop 0.4s ease-in-out;
+        }
+
+        .like-button {
+          position: relative;
+          overflow: visible;
+        }
+
+        .like-button::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 0;
+          height: 0;
+          background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+          border-radius: 50%;
+          transform: translate(-50%, -50%);
+          pointer-events: none;
+          transition: all 0.3s ease-out;
+        }
+
+        .like-button.animating::after {
+          width: 40px;
+          height: 40px;
+          opacity: 1;
+          animation: ripple 0.6s ease-out;
+        }
+
+        @keyframes ripple {
+          0% {
+            width: 0;
+            height: 0;
+            opacity: 0.7;
+          }
+          50% {
+            opacity: 0.3;
+          }
+          100% {
+            width: 40px;
+            height: 40px;
+            opacity: 0;
+          }
+        }
+      `}</style>
 
       {/* Fixed content section */}
       <div className="p-4 space-y-3">
@@ -98,12 +252,39 @@ export default function VideoComponent({ video }: { video: IVideo }) {
             </h2>
           </Link>
 
-           <button
-            onClick={() => updateVideo({ likes: (video.likes || 0) + 1, userId: video.userId })}
-            className={`${isLiked ? "bg-gray100" : ""} flex-shrink-0 p-2 cursor-pointer hover:bg-base-200 rounded-full transition-colors duration-200 group`}
+          <button
+            onClick={handleLike}
+            // className={`flex-shrink-0 p-2 cursor-pointer hover:bg-base-200 rounded-full transition-colors duration-200 group`}
+            className={`
+              like-button
+              flex-shrink-0 p-2 cursor-pointer hover:bg-base-200 rounded-full 
+              transition-colors duration-200 group
+              ${isAnimating ? 'like-button-animate animating' : ''}
+            `}
             aria-label="Share video"
+            style={{ color: isLiked ? 'blue' : 'inherit' }}
           >
-            <ThumbsUp className={`w-5 h-5 text-base-content/70 group-hover:text-base-content transition-colors duration-200`} />
+            <div className="flex items-center gap-1">
+              <ThumbsUp
+                className={`
+                  w-5 h-5 transition-all duration-200
+                  ${isLiked
+                    ? 'like-icon-liked text-blue-500 fill-current'
+                    : 'text-base-content/70 group-hover:text-base-content'
+                  }
+                  ${isAnimating && isLiked ? 'like-icon-liked' : ''}
+                `}
+              />
+              <span
+                className={`
+                  text-sm font-medium transition-colors duration-200
+                  ${isLiked ? 'text-blue-500' : 'text-base-content/70'}
+                  ${isAnimating ? 'like-count-animate' : ''}
+                `}
+              >
+                {currentLikes}
+              </span>
+            </div>
           </button>
 
           <button

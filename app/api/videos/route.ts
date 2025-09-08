@@ -99,7 +99,7 @@ export async function PATCH(request: NextRequest){
             }
         }
 
-        const response = await Video.findOneAndUpdate({userId: videoData?.userId}, videoData, {new: true, upsert: true});
+        const response = await Video.findOneAndUpdate({userId: videoData?.userId, _id: videoData?._id}, videoData, {new: true, upsert: true});
         return NextResponse.json(response);
     }
 

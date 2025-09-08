@@ -27,7 +27,7 @@ function page() {
 
     const seenIds = new Set();
     const uniqueVideos = videos?.filter((video: any) => {
-        if (video?.fileType === 'image' || seenIds.has(video.title)) {
+        if (video?.fileType === 'video' || seenIds.has(video.title)) {
             return false;
         }
         seenIds.add(video.title);
@@ -46,7 +46,7 @@ function page() {
                 </button>
 
                 <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
-                    Videos
+                    Images
                 </h1>
             </div>
 
