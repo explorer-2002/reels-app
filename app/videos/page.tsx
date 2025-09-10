@@ -6,6 +6,7 @@ import VideoComponent from '../components/VideoComponent';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { IVideo } from '@/models/Video';
+import Link from 'next/link';
 
 function page() {
     const [videos, setVideos] = useState<any>([]);
@@ -52,7 +53,9 @@ function page() {
 
             <div className='flex items-center'>
                 {uniqueVideos.length > 0 && uniqueVideos?.map((video: any) => {
-                    return <VideoComponent video={video} key={video._id} />
+                    return <Link href={`/videos/${video._id}`} key={video._id}>
+                        <VideoComponent video={video} key={video._id} />
+                    </Link>
                 })
                 }
             </div>

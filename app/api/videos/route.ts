@@ -10,6 +10,7 @@ export async function GET(){
     try{
         await connectToDatabase();
         console.log("Connected to db");
+
         const videos = await Video.find({}).sort({createdAt:-1}).lean() || [];
 
         if(!videos || videos?.length === 0){

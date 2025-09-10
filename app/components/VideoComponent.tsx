@@ -7,6 +7,7 @@ import { Video } from "@imagekit/next";
 import { Download, Share2, ThumbsUp } from "lucide-react";
 import { useState } from "react";
 import { Image } from '@imagekit/next';
+import { Tooltip } from "@nextui-org/react";
 
 export default function VideoComponent({ video }: { video: IVideo }) {
 
@@ -93,7 +94,6 @@ export default function VideoComponent({ video }: { video: IVideo }) {
   return (
     <div className="card bg-base-100 shadow hover:shadow-lg transition-all duration-300 w-fit">
       <figure className="relative px-4 pt-4">
-        <Link href={`/videos/${video._id}`} className="relative group w-full">
           <div
             className="rounded-xl overflow-hidden relative w-full"
             style={{ aspectRatio: "9/16" }}
@@ -128,7 +128,7 @@ export default function VideoComponent({ video }: { video: IVideo }) {
               />
             }
           </div>
-        </Link>
+
       </figure>
 
       <style jsx>{`
@@ -240,7 +240,7 @@ export default function VideoComponent({ video }: { video: IVideo }) {
       `}</style>
 
       {/* Fixed content section */}
-      <div className="p-4 space-y-3">
+      <div className="p-4 space-y-3 space-x-3">
         {/* Title and Share button row */}
         <div className="flex items-start justify-between gap-3">
           <Link
@@ -305,9 +305,29 @@ export default function VideoComponent({ video }: { video: IVideo }) {
         </div>
 
         {/* Description */}
-        <p className="text-sm text-base-content/70 leading-relaxed line-clamp-2">
-          {video.description}
-        </p>
+        <div className="flex justify-between items-center gap-2">
+          <p className="text-sm text-base-content/70 leading-relaxed line-clamp-2">
+            {video.description}
+          </p>
+
+          <Tooltip
+            content={video.userId}
+            placement="top"
+            color="foreground"
+            classNames={{
+              content: [
+                "px-3 py-2 shadow-xl rounded-lg",
+                "text-white bg-gray-800", // Set a solid, opaque background color
+                "backdrop-blur-none", // Explicitly remove the default blur effect
+              ],
+            }}
+          >
+            {/* The element that triggers the tooltip */}
+            <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold cursor-pointer">
+              {video.userId?.charAt(0).toUpperCase()}
+            </div>
+          </Tooltip>
+        </div>
       </div>
     </div>
   );
