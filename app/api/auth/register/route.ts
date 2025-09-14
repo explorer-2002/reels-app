@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-        { error: "Failed to register"},
+        { error: `Failed to register ${error}`},
         { status: 400 }
     ) 
   }
