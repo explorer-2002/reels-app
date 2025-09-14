@@ -14,7 +14,7 @@ export async function GET(){
         const videos = await Video.find({}).sort({createdAt:-1}).lean() || [];
 
         if(!videos || videos?.length === 0){
-            return NextResponse.json({error:"No video found"});
+            return NextResponse.json({error:"No video found", status:404 });
         }
 
         return NextResponse.json(videos);

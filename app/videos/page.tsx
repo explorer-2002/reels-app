@@ -20,6 +20,7 @@ function page() {
             } catch (error) {
                 console.error("Error fetching videos:", error);
             } finally {
+
             }
         };
 
@@ -27,13 +28,16 @@ function page() {
     }, []);
 
     const seenIds = new Set();
-    const uniqueVideos = videos?.filter((video: any) => {
-        if (video?.fileType === 'image' || seenIds.has(video.title)) {
+    const uniqueVideos = videos?.length > 0 ? videos?.filter((video: any) => {
+        if (video?.fileType === 'image' || seenIds.has(video?.title)) {
             return false;
         }
-        seenIds.add(video.title);
+        seenIds.add(video?.title);
         return true;
-    });
+    }) : [];
+
+    if(!uniqueVideos || uniqueVideos?.length === 0)
+        return <div className='inset-0 text-gray-100'>No video found..</div>
 
     return (
         <>
