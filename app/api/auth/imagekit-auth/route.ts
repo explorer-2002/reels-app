@@ -15,7 +15,7 @@ export async function GET() {
     
   } catch (error) {
     return Response.json({
-        error: "Image Kit authentication failed",
+        error: `Image Kit authentication failed ${error}`,
         status: 500,
       });
   }

@@ -1,11 +1,9 @@
 import { connectToDatabase } from "@/lib/db";
 import Comments from "@/models/Comments";
 import { NextRequest, NextResponse } from "next/server";
-import mongoose from "mongoose";
-import { v4 as uuidv4 } from 'uuid';
 import Replies from "@/models/Replies";
 
-export async function GET(request: NextRequest,{ params }: { params: { id: string } }){
+export async function GET(request: NextRequest,{ params }: { params: Promise<{ id: string }> }){
     try{
         await connectToDatabase();
         console.log("Function to fetch video by id called");
