@@ -372,6 +372,7 @@ const FileUpload = ({ onSuccess, onProgress, fileType }: FileUploadProps) => {
     } catch (error) {
       console.error("Upload failed: ", error);
       setError("Upload failed. Please try again.");
+      onProgress(0)
     } finally {
       setUploading(false);
     }

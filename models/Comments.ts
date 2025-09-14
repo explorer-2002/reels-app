@@ -10,7 +10,7 @@ export interface IComment{
 
 const commentSchema = new Schema<IComment>(
     {
-        id: {type:String, unique:true, default: uuidv4() },
+        id: {type:String, unique:true, default: () => uuidv4() },
         comment: {type:String, required:true},
         viewerId: {type:String},
         videoId: {type:String}

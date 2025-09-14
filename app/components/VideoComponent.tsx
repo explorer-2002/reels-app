@@ -92,10 +92,12 @@ export default function VideoComponent({ video }: { video: IVideo }) {
   };
 
   return (
-    <div className="card bg-base-100 shadow hover:shadow-lg transition-all duration-300 w-fit">
-      <figure className="relative px-4 pt-4">
+    <div className="card bg-base-100 transition-all duration-300 w-fit rounded-2xl shadow-lg shadow-blue-500/10 
+        hover:shadow-2xl hover:shadow-blue-500/30 hover:-translate-y-1 dark:shadow-lg dark:shadow-blue-400/20 
+        dark:hover:shadow-2xl dark:hover:shadow-blue-400/40">
+      <figure className="relative px-4">
           <div
-            className="rounded-xl overflow-hidden relative w-full"
+            className="rounded-xl overflow-hidden relative w-full bg-gradient-to-br from-gray-100 to-gray-200"
             style={{ aspectRatio: "9/16" }}
           >
             {/* <IKVideo
@@ -117,6 +119,7 @@ export default function VideoComponent({ video }: { video: IVideo }) {
                 width={300}
                 height={300}
                 alt="Picture of the author"
+                loading="lazy"
               /> :
               <Video
                 urlEndpoint="https://ik.imagekit.io/your_imagekit_id"
@@ -125,119 +128,12 @@ export default function VideoComponent({ video }: { video: IVideo }) {
                 width={300}
                 height={300}
                 autoPlay={true}
+                loading="lazy"
               />
             }
           </div>
 
       </figure>
-
-      <style jsx>{`
-        @keyframes likeAnimation {
-          0% {
-            transform: scale(1);
-          }
-          15% {
-            transform: scale(1.2);
-          }
-          30% {
-            transform: scale(0.95);
-          }
-          45%, 80% {
-            transform: scale(1);
-          }
-        }
-
-        @keyframes heartBeat {
-          0% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.1);
-          }
-          100% {
-            transform: scale(1);
-          }
-        }
-
-        @keyframes numberPop {
-          0% {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-          }
-          50% {
-            transform: translateY(-10px) scale(1.1);
-            opacity: 1;
-          }
-          100% {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-          }
-        }
-
-        @keyframes fillColor {
-          0% {
-            fill: currentColor;
-          }
-          100% {
-            fill: #3b82f6;
-          }
-        }
-
-        .like-button-animate {
-          animation: likeAnimation 0.6s ease-in-out;
-        }
-
-        .like-icon-liked {
-          color: #3b82f6;
-          animation: heartBeat 0.3s ease-in-out;
-        }
-
-        .like-count-animate {
-          animation: numberPop 0.4s ease-in-out;
-        }
-
-        .like-button {
-          position: relative;
-          overflow: visible;
-        }
-
-        .like-button::after {
-          content: '';
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 0;
-          height: 0;
-          background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
-          border-radius: 50%;
-          transform: translate(-50%, -50%);
-          pointer-events: none;
-          transition: all 0.3s ease-out;
-        }
-
-        .like-button.animating::after {
-          width: 40px;
-          height: 40px;
-          opacity: 1;
-          animation: ripple 0.6s ease-out;
-        }
-
-        @keyframes ripple {
-          0% {
-            width: 0;
-            height: 0;
-            opacity: 0.7;
-          }
-          50% {
-            opacity: 0.3;
-          }
-          100% {
-            width: 40px;
-            height: 40px;
-            opacity: 0;
-          }
-        }
-      `}</style>
 
       {/* Fixed content section */}
       <div className="p-4 space-y-3 space-x-3">

@@ -1,15 +1,16 @@
 @import "tailwindcss";
 
-:root {
+/* :root {
   --background: #ffffff;
   --foreground: #171717;
-}
+} */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-inter: var(--font-inter);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,7 +21,113 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  /* background: var(--background);
+  color: var(--foreground); */
   font-family: Arial, Helvetica, sans-serif;
 }
+
+ @keyframes likeAnimation {
+          0% {
+            transform: scale(1);
+          }
+          15% {
+            transform: scale(1.2);
+          }
+          30% {
+            transform: scale(0.95);
+          }
+          45%, 80% {
+            transform: scale(1);
+          }
+        }
+
+        @keyframes heartBeat {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.1);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+
+        @keyframes numberPop {
+          0% {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: translateY(-10px) scale(1.1);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+          }
+        }
+
+        @keyframes fillColor {
+          0% {
+            fill: currentColor;
+          }
+          100% {
+            fill: #3b82f6;
+          }
+        }
+
+        .like-button-animate {
+          animation: likeAnimation 0.6s ease-in-out;
+        }
+
+        .like-icon-liked {
+          color: #3b82f6;
+          animation: heartBeat 0.3s ease-in-out;
+        }
+
+        .like-count-animate {
+          animation: numberPop 0.4s ease-in-out;
+        }
+
+        .like-button {
+          position: relative;
+          overflow: visible;
+        }
+
+        .like-button::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 0;
+          height: 0;
+          background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+          border-radius: 50%;
+          transform: translate(-50%, -50%);
+          pointer-events: none;
+          transition: all 0.3s ease-out;
+        }
+
+        .like-button.animating::after {
+          width: 40px;
+          height: 40px;
+          opacity: 1;
+          animation: ripple 0.6s ease-out;
+        }
+
+        @keyframes ripple {
+          0% {
+            width: 0;
+            height: 0;
+            opacity: 0.7;
+          }
+          50% {
+            opacity: 0.3;
+          }
+          100% {
+            width: 40px;
+            height: 40px;
+            opacity: 0;
+          }
+        }

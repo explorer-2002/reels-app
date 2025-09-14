@@ -36,7 +36,7 @@ function page() {
 
     return (
         <>
-            <div className="flex items-center gap-4 mb-6 p-4">
+            <div className="flex items-center gap-3 mb-6 p-3">
                 <button
                     onClick={() => router.back()}
                     className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200 group"
@@ -45,12 +45,12 @@ function page() {
                     <ArrowLeft className="w-5 h-5 text-gray-600 group-hover:text-gray-800 transition-colors duration-200" />
                 </button>
 
-                <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+                <h1 className="text-3xl font-bold tracking-tight">
                     Images
                 </h1>
             </div>
 
-            <div className='flex items-center'>
+            <div className='flex items-center justify-center'>
                 {uniqueVideos.length > 0 && uniqueVideos?.map((video: any) => {
                     return <VideoComponent video={video} key={video._id} />
                 })

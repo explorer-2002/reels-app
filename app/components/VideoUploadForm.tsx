@@ -31,7 +31,7 @@ const VideoUploadPage = () => {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const fileTypeRef = useRef<'image' | 'video'>('video');
+  const [fileType, setFileType] = useState<'image' | 'video'>('video');
 
   const handleUploadSuccess = (response: UploadResponse) => {
     console.log("Upload successful:", response);
@@ -68,7 +68,7 @@ const VideoUploadPage = () => {
       uploadedVideo
     });
 
-    await apiClient.createVideo({title, description, videoUrl:uploadedVideo.url!,fileType: fileTypeRef.current, thumbnailUrl: "thumbnail url", userId:userId!})
+    await apiClient.createVideo({title, description, videoUrl:uploadedVideo.url!,fileType: fileType, thumbnailUrl: "thumbnail url", userId:userId!})
     setTitle("");
     setDescription("");
     setUploadedVideo(null);
@@ -89,18 +89,21 @@ const VideoUploadPage = () => {
 
 
             <div className="flex items-center space-x-4 mb-4">
-            <span className="text-sm font-medium text-gray-700">File Type:</span>
+            <span className="text-sm font-medium">File Type:</span>
             <div className="flex items-center">
               <input
                 type="radio"
                 id="fileTypeImage"
                 name="fileType"
                 value="image"
-                checked={fileTypeRef.current === 'image'}
-                onChange={() => (fileTypeRef.current = 'image')}
-                className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
+                checked={fileType === 'image'}
+                onChange={() => {
+                  console.log('image selected');
+                  setFileType('image')
+                }}
+                className={`focus:ring-blue-500 h-4 w-4 border-gray-300`}
               />
-              <label htmlFor="fileTypeImage" className="ml-2 block text-sm text-gray-900">Image</label>
+              <label htmlFor="fileTypeImage" className="ml-2 block text-sm">Image</label>
             </div>
             <div className="flex items-center">
               <input
@@ -108,16 +111,19 @@ const VideoUploadPage = () => {
                 id="fileTypeVideo"
                 name="fileType"
                 value="video"
-                checked={fileTypeRef.current === 'video'}
-                onChange={() => (fileTypeRef.current = 'video')}
-                className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
+                checked={fileType === 'video'}
+                onChange={() => {
+                  console.log('video selected');
+                  setFileType('video')
+                }}
+                className={`focus:ring-blue-500 h-4 w-4 border-gray-300`}
               />
-              <label htmlFor="fileTypeVideo" className="ml-2 block text-sm text-gray-900">Video</label>
+              <label htmlFor="fileTypeVideo" className="ml-2 block text-sm">Video</label>
             </div>
           </div>
 
             <FileUpload
-              fileType={fileTypeRef.current}
+              fileType={fileType}
               onSuccess={handleUploadSuccess}
               onProgress={handleUploadProgress}
             />

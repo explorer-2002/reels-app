@@ -6,16 +6,16 @@ import { useRouter } from 'next/navigation';
 
 function Dashboard() {
 
-    const {status} = useSession();
-    const router = useRouter();
+  const { status } = useSession();
+  const router = useRouter();
 
-    if(status === 'unauthenticated')
-        router.push('/login');
+  if (status === 'unauthenticated')
+    router.push('/login');
 
   return (
     <div className="font-sans items-center justify-items-center">
-   <VideoUploadPage />
-  </div>
+      <VideoUploadPage />
+    </div>
   )
 }
 
