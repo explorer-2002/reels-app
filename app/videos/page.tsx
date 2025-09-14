@@ -52,7 +52,7 @@ function page() {
             </div>
 
             <div className='flex items-center justify-center'>
-                {uniqueVideos.length > 0 && uniqueVideos?.map((video: any) => {
+                {uniqueVideos?.length > 0 && uniqueVideos?.map((video: any) => {
                     return <Link href={`/videos/${video._id}`} key={video._id}>
                         <VideoComponent video={video} key={video._id} />
                     </Link>
