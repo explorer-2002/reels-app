@@ -5,12 +5,12 @@ import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from 'uuid';
 
-export async function GET(request: NextRequest,{ params }: { params: { id: string } }){
+export async function GET(request: NextRequest,{ params }: { params: Promise<{ id: string }> }){
     try{
         await connectToDatabase();
         console.log("Function to fetch video by id called");
 
-        const {id} = params;
+        const {id} = await params;
         console.log("id: ", id);
         console.log("Connected to db", id);
 
