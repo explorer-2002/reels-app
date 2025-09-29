@@ -1,6 +1,16 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+
+
 
 ## Getting Started
+
+This is my Personal Project built with Next,js, NextAuth and ImageKit, an application we can register, login, can upload and download videos and images, 
+Others can like, share and comment on our videos and vice versa.
+
+Deployed at - https://youtube-sanyam.netlify.app
+
+
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 First, run the development server:
 
