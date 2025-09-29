@@ -21,6 +21,7 @@ import { UploadResponse } from "@imagekit/next";
 import { apiClient } from "@/lib/api-client";
 import { useSession } from "next-auth/react";
 import { set } from "mongoose";
+import toast from "react-hot-toast";
 
 const VideoUploadPage = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -69,6 +70,7 @@ const VideoUploadPage = () => {
     });
 
     await apiClient.createVideo({title, description, videoUrl:uploadedVideo.url!,fileType: fileType, thumbnailUrl: "thumbnail url", userId:userId!})
+    toast.success("Media successfully uploaded")
     setTitle("");
     setDescription("");
     setUploadedVideo(null);
@@ -82,10 +84,10 @@ const VideoUploadPage = () => {
         <div className="">
           <form onSubmit={handleSubmit} className="flex flex-col justify-content-center align-middle gap-y-2">
             <label>Title</label>
-            <input type="text" placeholder="title" value={title} onChange={(e) => setTitle(e.target.value)} className="bg-gray-50"/>
+            <input type="text" placeholder="title" value={title} onChange={(e) => setTitle(e.target.value)} className="bg-gray-50 text-gray-700"/>
 
             <label>Description</label>
-            <textarea rows={6} cols={15} onChange={(e) => setDescription(e.target.value)} className="bg-gray-50" />
+            <textarea rows={6} cols={15} onChange={(e) => setDescription(e.target.value)} className="bg-gray-50 text-gray-700" />
 
 
             <div className="flex items-center space-x-4 mb-4">

@@ -475,8 +475,8 @@ const FileUpload = ({ onSuccess, onProgress, fileType }: FileUploadProps) => {
             </p>
             <p className="text-xs text-gray-500">
               Supported formats: {fileType === "video" 
-                ? "MP4, MOV, AVI, WebM, MKV" 
-                : "JPG, JPEG, PNG, GIF, WebP, SVG"
+                ? "MP4" 
+                : "JPG, JPEG, PNG"
               }
             </p>
           </div>
